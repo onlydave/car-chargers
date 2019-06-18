@@ -43,6 +43,7 @@ class App extends React.Component<{}, AppState> {
 
   componentDidMount() {
     this.getLocations();
+    window.addEventListener("focus", this.getLocations);
   }
 
   getLocations = () => {
