@@ -30,7 +30,6 @@ class SelectList extends React.Component<SelectListProps> {
   };
 
   render() {
-    console.log("render selectList");
     const { locations, search } = this.props;
     const searchRegex = search
       .split(" ")
