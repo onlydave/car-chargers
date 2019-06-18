@@ -27,7 +27,8 @@ type AppState = {
   mapLinks: {
     [name: string]: string
   },
-  fetchError: boolean
+  fetchError: boolean,
+  loading: boolean
 };
 
 class App extends React.Component<{}, AppState> {
@@ -36,7 +37,8 @@ class App extends React.Component<{}, AppState> {
     locations: getSavedImmutable("locations") || Map(),
     search: "",
     mapLinks: {},
-    fetchError: false
+    fetchError: false,
+    loading: false
   };
 
   componentDidMount() {
@@ -44,14 +46,23 @@ class App extends React.Component<{}, AppState> {
   }
 
   getLocations = () => {
+    this.setState({
+      loading: true
+    });
     fetchEcars()
       .then(({ locations, mapLinks }) => {
         localStorage.setItem("locations", JSON.stringify(locations.toJS()));
-        this.setState({ locations, mapLinks, fetchError: false });
+        this.setState({
+          locations,
+          mapLinks,
+          fetchError: false,
+          loading: false
+        });
       })
       .catch(() => {
         this.setState({
-          fetchError: true
+          fetchError: true,
+          loading: false
         });
       });
   };
@@ -95,7 +106,8 @@ class App extends React.Component<{}, AppState> {
       selectedLocations,
       search,
       mapLinks,
-      fetchError
+      fetchError,
+      loading
     } = this.state;
 
     return (
@@ -131,6 +143,7 @@ class App extends React.Component<{}, AppState> {
               icon={faSync}
               size="3x"
               color={fetchError ? "red" : "lime"}
+              className={loading ? "spin" : ""}
             />
           </button>
         </div>
