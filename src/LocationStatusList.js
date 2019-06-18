@@ -5,15 +5,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBolt,
   faPlug,
-  faMapMarkerAlt
+  faMapMarkerAlt,
+  faTrash,
+  faPen
 } from "@fortawesome/free-solid-svg-icons";
 
 import type { Locations } from "./api/fetchEcars";
 
-import { Set } from "immutable";
+import { Map, Set } from "immutable";
 
 export type StatusListProps = {
-  removeLocation: string => null,
+  removeLocation: string => void,
+  setLocationNickname: (string, string) => void,
+  locationNicknames: Map<string, string>,
   selectedLocations: Set<string>,
   locations: Locations,
   mapLinks: {
@@ -36,8 +40,20 @@ class LocationStatusList extends React.Component<StatusListProps> {
     this.props.removeLocation(name);
   };
 
+  changeLocationName = (event: SyntheticInputEvent<HTMLButtonElement>) => {
+    const {
+      target: { name }
+    } = event;
+    this.props.setLocationNickname(name, window.prompt(name, ""));
+  };
+
   render() {
-    const { locations, selectedLocations, mapLinks } = this.props;
+    const {
+      locations,
+      selectedLocations,
+      locationNicknames,
+      mapLinks
+    } = this.props;
 
     return (
       <div style={{ paddingTop: 10, paddingBottom: 10 }}>
@@ -46,7 +62,7 @@ class LocationStatusList extends React.Component<StatusListProps> {
           if (!location) {
             return null;
           }
-
+          const nickname = locationNicknames.get(name);
           return (
             <div key={name} style={{ padding: 10 }}>
               <div
@@ -56,14 +72,25 @@ class LocationStatusList extends React.Component<StatusListProps> {
                   justifyContent: "space-between"
                 }}
               >
-                {name}
+                {!!nickname ? (
+                  <div>
+                    {nickname}
+                    <div style={{ fontSize: 10, color: "gray" }}>{name}</div>
+                  </div>
+                ) : (
+                  name
+                )}
                 <FontAwesomeIcon
                   icon={faMapMarkerAlt}
                   size="2x"
-                  style={{ paddingRight: 10 }}
+                  style={{
+                    marginLeft: 5,
+                    padding: "5px 10px",
+                    border: "1px solid teal"
+                  }}
                   onClick={this.openMap}
                   data-maplink={mapLinks[name]}
-                  color="TEAL"
+                  color="teal"
                 />
               </div>
               <div style={{ padding: 5 }}>
@@ -84,9 +111,33 @@ class LocationStatusList extends React.Component<StatusListProps> {
                   );
                 })}
               </div>
-              <button onClick={this.removeLocation} name={name}>
-                remove location
-              </button>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <button
+                  onClick={this.removeLocation}
+                  name={name}
+                  style={{ padding: 10, border: "1px solid gray" }}
+                >
+                  <FontAwesomeIcon icon={faTrash} color="gray" size="1x" />
+                </button>
+                <button
+                  onClick={this.changeLocationName}
+                  name={name}
+                  style={{
+                    marginLeft: 10,
+                    padding: 10,
+                    border: "1px solid teal",
+                    color: "teal",
+                    flexGrow: 1
+                  }}
+                >
+                  Edit name
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    color="teal"
+                    style={{ marginLeft: 10 }}
+                  />
+                </button>
+              </div>
               <hr />
             </div>
           );

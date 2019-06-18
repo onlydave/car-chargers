@@ -7,6 +7,7 @@
   height: 40vmin;
   pointer-events: none;
 }
+
 .spin {
   animation: App-logo-spin infinite 4s linear;
 }
@@ -30,6 +31,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -47,4 +49,8 @@
   /* Required for text-overflow to do anything */
   white-space: nowrap;
   overflow: hidden;
+}
+
+svg {
+  pointer-events: none;
 }

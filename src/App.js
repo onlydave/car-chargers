@@ -11,6 +11,7 @@ import LocationStatusList from "./LocationStatusList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSync, faTimes } from "@fortawesome/free-solid-svg-icons";
 import onWindowFocus from "./utils/onWindowFocus";
+import AppHeader from "./AppHeader";
 
 const getSavedImmutable = (key = "selectedLocations") => {
   const localLocations = localStorage.getItem(key);
@@ -24,6 +25,7 @@ const getSavedImmutable = (key = "selectedLocations") => {
 type AppState = {
   selectedLocations: Set<string>,
   locations: Locations,
+  locationNicknames: Map<string, string>,
   search: string,
   mapLinks: {
     [name: string]: string
@@ -36,6 +38,7 @@ class App extends React.Component<{}, AppState> {
   state = {
     selectedLocations: getSavedImmutable("selectedLocations") || Set(),
     locations: getSavedImmutable("locations") || Map(),
+    locationNicknames: getSavedImmutable("locationsNicknames") || Map(),
     search: "",
     mapLinks: {},
     fetchError: false,
@@ -72,16 +75,16 @@ class App extends React.Component<{}, AppState> {
 
   addLocation = (location: string) => {
     const selectedLocations = this.state.selectedLocations.add(location);
-    return this.setSelected(selectedLocations);
+    this.setSelected(selectedLocations);
   };
 
   removeLocation = (location: string) => {
     const selectedLocations = this.state.selectedLocations.remove(location);
-    return this.setSelected(selectedLocations);
+    this.setSelected(selectedLocations);
   };
 
   clearSelected = () => {
-    return this.setSelected(Set());
+    this.setSelected(Set());
   };
 
   setSelected = (
@@ -94,7 +97,6 @@ class App extends React.Component<{}, AppState> {
       "selectedLocations",
       JSON.stringify(selectedLocations.toJS())
     );
-    return null;
   };
 
   setSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -103,10 +105,22 @@ class App extends React.Component<{}, AppState> {
     });
   };
 
+  setLocationNickname = (key: string, nickname: string) => {
+    const locationNicknames = this.state.locationNicknames.set(key, nickname);
+    this.setState({
+      locationNicknames
+    });
+    localStorage.setItem(
+      "locationsNicknames",
+      JSON.stringify(locationNicknames.toJS())
+    );
+  };
+
   render() {
     const {
       locations,
       selectedLocations,
+      locationNicknames,
       search,
       mapLinks,
       fetchError,
@@ -115,62 +129,33 @@ class App extends React.Component<{}, AppState> {
 
     return (
       <div className="App">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <input
-            onChange={this.setSearch}
-            value={search}
-            placeholder="Search Locations..."
-            style={{
-              width: 10,
-              flexGrow: 1,
-              padding: 10,
-              fontSize: 23,
-              border: "1px solid black",
-              borderRight: "none",
-              borderRadius: 0,
-              margin: 0,
-              height: 28,
-              boxShadow: "none",
-              WebkitAppearance: "none"
-            }}
-          />
-          <div
-            onClick={this.setSearch}
-            value=""
-            style={{
-              paddingRight: 10,
-              background: "none",
-              border: "1px solid black",
-              borderLeft: "none"
-            }}
-          >
-            <FontAwesomeIcon icon={faTimes} size="3x" />
-          </div>
-          <div onClick={this.getLocations} style={{ padding: 10 }}>
-            <FontAwesomeIcon
-              icon={faSync}
-              size="2x"
-              color={fetchError ? "red" : "lime"}
-              className={loading ? "spin" : ""}
+        <AppHeader
+          search={search}
+          fetchError={fetchError}
+          loading={loading}
+          setSearch={this.setSearch}
+          getLocations={this.getLocations}
+        />
+        <div style={{ paddingTop: 60 }}>
+          {search || !selectedLocations.size ? (
+            <SelectList
+              search={search}
+              locations={locations}
+              selectedLocations={selectedLocations}
+              removeLocation={this.removeLocation}
+              addLocation={this.addLocation}
             />
-          </div>
+          ) : (
+            <LocationStatusList
+              locations={locations}
+              selectedLocations={selectedLocations}
+              removeLocation={this.removeLocation}
+              setLocationNickname={this.setLocationNickname}
+              mapLinks={mapLinks}
+              locationNicknames={locationNicknames}
+            />
+          )}
         </div>
-        {search || !selectedLocations.size ? (
-          <SelectList
-            search={search}
-            locations={locations}
-            selectedLocations={selectedLocations}
-            removeLocation={this.removeLocation}
-            addLocation={this.addLocation}
-          />
-        ) : (
-          <LocationStatusList
-            locations={locations}
-            selectedLocations={selectedLocations}
-            removeLocation={this.removeLocation}
-            mapLinks={mapLinks}
-          />
-        )}
       </div>
     );
   }

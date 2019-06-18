@@ -9,8 +9,8 @@ import type { Locations } from "./api/fetchEcars";
 import { Set } from "immutable";
 
 export type SelectListProps = {
-  removeLocation: string => null,
-  addLocation: string => null,
+  removeLocation: string => void,
+  addLocation: string => void,
   selectedLocations: Set<string>,
   locations: Locations,
   search: string
