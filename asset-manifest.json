@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/car-chargers/static/css/main.d8631cc8.chunk.css",
+    "main.js": "/car-chargers/static/js/main.dfad8952.chunk.js",
+    "main.js.map": "/car-chargers/static/js/main.dfad8952.chunk.js.map",
+    "runtime~main.js": "/car-chargers/static/js/runtime~main.64cab64a.js",
+    "runtime~main.js.map": "/car-chargers/static/js/runtime~main.64cab64a.js.map",
+    "static/js/2.0a6b5f5e.chunk.js": "/car-chargers/static/js/2.0a6b5f5e.chunk.js",
+    "static/js/2.0a6b5f5e.chunk.js.map": "/car-chargers/static/js/2.0a6b5f5e.chunk.js.map",
+    "index.html": "/car-chargers/index.html",
+    "precache-manifest.859f74b44047d30ce9f42aabdd7e6ebb.js": "/car-chargers/precache-manifest.859f74b44047d30ce9f42aabdd7e6ebb.js",
+    "service-worker.js": "/car-chargers/service-worker.js",
+    "static/css/main.d8631cc8.chunk.css.map": "/car-chargers/static/css/main.d8631cc8.chunk.css.map",
+    "static/media/logo.svg": "/car-chargers/static/media/logo.5d5d9eef.svg"
+  }
+}
