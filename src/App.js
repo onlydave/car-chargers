@@ -96,7 +96,7 @@ class App extends React.Component<{}, AppState> {
 
   setSearch = (event: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({
-      search: event.target.value
+      search: event.target.value || ""
     });
   };
 
