@@ -49,7 +49,13 @@ class LocationStatusList extends React.Component<StatusListProps> {
 
           return (
             <div key={name} style={{ padding: 10 }}>
-              <div style={{ display: "flex", alignItems: "flex-start" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between"
+                }}
+              >
                 {name}
                 <FontAwesomeIcon
                   icon={faMapMarkerAlt}
