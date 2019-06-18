@@ -68,7 +68,7 @@ class LocationStatusList extends React.Component<StatusListProps> {
               </div>
               <div style={{ padding: 5 }}>
                 {location.entrySeq().map(([plugName, status]) => {
-                  const available = status === "Available";
+                  const available = /Available/i.test(status);
                   const iconColor = available ? "lime" : "grey";
                   const color = available ? "black" : "grey";
                   const icon = /DC/.test(plugName) ? faBolt : faPlug;

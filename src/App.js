@@ -10,6 +10,7 @@ import fetchEcars from "./api/fetchEcars";
 import LocationStatusList from "./LocationStatusList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSync, faTimes } from "@fortawesome/free-solid-svg-icons";
+import onWindowFocus from "./utils/onWindowFocus";
 
 const getSavedImmutable = (key = "selectedLocations") => {
   const localLocations = localStorage.getItem(key);
@@ -43,7 +44,7 @@ class App extends React.Component<{}, AppState> {
 
   componentDidMount() {
     this.getLocations();
-    window.addEventListener("focus", this.getLocations);
+    onWindowFocus(this.getLocations);
   }
 
   getLocations = () => {
