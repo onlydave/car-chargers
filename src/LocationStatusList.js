@@ -44,7 +44,12 @@ class LocationStatusList extends React.Component<StatusListProps> {
     const {
       target: { name }
     } = event;
-    this.props.setLocationNickname(name, window.prompt(name, ""));
+    const nickname = event.currentTarget.dataset.nickname;
+    const newNickname = window.prompt(name, nickname);
+    console.log(newNickname);
+    if (newNickname || newNickname === "") {
+      this.props.setLocationNickname(name, newNickname);
+    }
   };
 
   render() {
@@ -73,25 +78,39 @@ class LocationStatusList extends React.Component<StatusListProps> {
                 }}
               >
                 {!!nickname ? (
-                  <div>
-                    {nickname}
-                    <div style={{ fontSize: 10, color: "gray" }}>{name}</div>
+                  <div style={{ overflow: "hidden" }}>
+                    <div style={{ fontSize: 35, lineHeight: 0.8 }}>
+                      {nickname}
+                    </div>
+                    <div
+                      className="ellipsis"
+                      style={{
+                        fontSize: 10,
+                        color: "gray",
+                        marginTop: 5,
+                        marginLeft: 2
+                      }}
+                    >
+                      {name}
+                    </div>
                   </div>
                 ) : (
                   name
                 )}
-                <FontAwesomeIcon
-                  icon={faMapMarkerAlt}
-                  size="2x"
-                  style={{
-                    marginLeft: 5,
-                    padding: "5px 10px",
-                    border: "1px solid teal"
-                  }}
-                  onClick={this.openMap}
-                  data-maplink={mapLinks[name]}
-                  color="teal"
-                />
+                <div>
+                  <FontAwesomeIcon
+                    icon={faMapMarkerAlt}
+                    size="2x"
+                    style={{
+                      marginLeft: 5,
+                      padding: "5px 10px",
+                      border: "1px solid teal"
+                    }}
+                    onClick={this.openMap}
+                    data-maplink={mapLinks[name]}
+                    color="teal"
+                  />
+                </div>
               </div>
               <div style={{ padding: 5 }}>
                 {location.entrySeq().map(([plugName, status]) => {
@@ -126,6 +145,7 @@ class LocationStatusList extends React.Component<StatusListProps> {
                 <button
                   onClick={this.changeLocationName}
                   name={name}
+                  data-nickname={nickname}
                   style={{
                     marginLeft: 10,
                     padding: 10,
