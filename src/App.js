@@ -26,7 +26,8 @@ type AppState = {
   search: string,
   mapLinks: {
     [name: string]: string
-  }
+  },
+  fetchError: boolean
 };
 
 class App extends React.Component<{}, AppState> {
@@ -34,7 +35,8 @@ class App extends React.Component<{}, AppState> {
     selectedLocations: getSavedImmutable("selectedLocations") || Set(),
     locations: getSavedImmutable("locations") || Map(),
     search: "",
-    mapLinks: {}
+    mapLinks: {},
+    fetchError: false
   };
 
   componentDidMount() {
@@ -42,10 +44,16 @@ class App extends React.Component<{}, AppState> {
   }
 
   getLocations = () => {
-    fetchEcars().then(({ locations, mapLinks }) => {
-      localStorage.setItem("locations", JSON.stringify(locations.toJS()));
-      this.setState({ locations, mapLinks });
-    });
+    fetchEcars()
+      .then(({ locations, mapLinks }) => {
+        localStorage.setItem("locations", JSON.stringify(locations.toJS()));
+        this.setState({ locations, mapLinks, fetchError: false });
+      })
+      .catch(() => {
+        this.setState({
+          fetchError: true
+        });
+      });
   };
 
   addLocation = (location: string) => {
@@ -82,7 +90,13 @@ class App extends React.Component<{}, AppState> {
   };
 
   render() {
-    const { locations, selectedLocations, search, mapLinks } = this.state;
+    const {
+      locations,
+      selectedLocations,
+      search,
+      mapLinks,
+      fetchError
+    } = this.state;
 
     return (
       <div className="App">
@@ -113,7 +127,11 @@ class App extends React.Component<{}, AppState> {
             <FontAwesomeIcon icon={faTimes} size="3x" />
           </button>
           <button onClick={this.getLocations} style={{ width: 70 }}>
-            <FontAwesomeIcon icon={faSync} size="3x" />
+            <FontAwesomeIcon
+              icon={faSync}
+              size="3x"
+              color={fetchError ? "red" : "lime"}
+            />
           </button>
         </div>
         {search || !selectedLocations.size ? (
