@@ -2,7 +2,7 @@
 
 import { Map } from "immutable";
 
-import matchAll from 'string.prototype.matchall';
+import matchAll from "string.prototype.matchall";
 
 const convert = require("xml-js");
 

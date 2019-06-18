@@ -62,7 +62,7 @@ class App extends React.Component<{}, AppState> {
         });
       })
       .catch((...error) => {
-        console.error(...error)
+        console.error(...error);
         this.setState({
           fetchError: true,
           loading: false
