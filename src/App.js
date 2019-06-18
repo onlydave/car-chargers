@@ -61,7 +61,8 @@ class App extends React.Component<{}, AppState> {
           loading: false
         });
       })
-      .catch(() => {
+      .catch((...error) => {
+        console.error(...error)
         this.setState({
           fetchError: true,
           loading: false
@@ -125,7 +126,8 @@ class App extends React.Component<{}, AppState> {
               padding: 10,
               fontSize: 30,
               border: "1px solid black",
-              borderRight: "none"
+              borderRight: "none",
+              borderRadius: 0
             }}
           />
           <button
@@ -140,14 +142,14 @@ class App extends React.Component<{}, AppState> {
           >
             <FontAwesomeIcon icon={faTimes} size="3x" />
           </button>
-          <button onClick={this.getLocations} style={{ width: 70 }}>
+          <div onClick={this.getLocations} style={{ width: 70 }}>
             <FontAwesomeIcon
               icon={faSync}
               size="3x"
               color={fetchError ? "red" : "lime"}
               className={loading ? "spin" : ""}
             />
-          </button>
+          </div>
         </div>
         {search || !selectedLocations.size ? (
           <SelectList

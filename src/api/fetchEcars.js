@@ -2,6 +2,8 @@
 
 import { Map } from "immutable";
 
+import matchAll from 'string.prototype.matchall';
+
 const convert = require("xml-js");
 
 export const topaz =
@@ -22,6 +24,7 @@ export const fetchEcars = () =>
     .then(response => response.text())
     .then(xml => {
       const json = convert.xml2js(xml, { compact: true });
+      console.log(json);
       const chargers = json.kml.Document.Placemark;
 
       let locations: Locations = Map({});
@@ -30,8 +33,8 @@ export const fetchEcars = () =>
       chargers.forEach((place: Placemark) => {
         const name = place.name._text;
         const description = place.description._cdata;
-        // $FlowFixMe
-        const matches = [...description.matchAll(typeStatusRegex)];
+
+        const matches = [...matchAll(description, typeStatusRegex)];
 
         const mapLink = description.match(/(https:\/\/www.google.com\S*)"/);
         if (mapLink) {
