@@ -53,7 +53,7 @@ class SelectList extends React.Component<SelectListProps> {
           }
           return (
             <label key={key} className="selectortron">
-              <div className="ellipsis">{key}</div>
+              <div className="">{key}</div>
               <input
                 name={key}
                 type="checkbox"

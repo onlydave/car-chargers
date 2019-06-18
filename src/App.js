@@ -115,7 +115,7 @@ class App extends React.Component<{}, AppState> {
 
     return (
       <div className="App">
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <input
             onChange={this.setSearch}
             value={search}
@@ -124,28 +124,32 @@ class App extends React.Component<{}, AppState> {
               width: 10,
               flexGrow: 1,
               padding: 10,
-              fontSize: 30,
+              fontSize: 23,
               border: "1px solid black",
               borderRight: "none",
-              borderRadius: 0
+              borderRadius: 0,
+              margin: 0,
+              height: 28,
+              boxShadow: "none",
+              WebkitAppearance: "none"
             }}
           />
-          <button
+          <div
             onClick={this.setSearch}
             value=""
             style={{
-              paddingRight: 20,
+              paddingRight: 10,
               background: "none",
               border: "1px solid black",
               borderLeft: "none"
             }}
           >
             <FontAwesomeIcon icon={faTimes} size="3x" />
-          </button>
-          <div onClick={this.getLocations} style={{ width: 70 }}>
+          </div>
+          <div onClick={this.getLocations} style={{ padding: 10 }}>
             <FontAwesomeIcon
               icon={faSync}
-              size="3x"
+              size="2x"
               color={fetchError ? "red" : "lime"}
               className={loading ? "spin" : ""}
             />
