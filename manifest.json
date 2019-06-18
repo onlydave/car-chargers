@@ -1,6 +1,6 @@
 {
-  "short_name": "Chargers",
-  "name": "Chargers",
+  "short_name": "Charger Status",
+  "name": "Charger Status",
   "icons": [
     {
       "src": "android-chrome-192x192.png",
