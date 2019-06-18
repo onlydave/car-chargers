@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/car-chargers/static/css/main.d8631cc8.chunk.css",
-    "main.js": "/car-chargers/static/js/main.11a42b84.chunk.js",
-    "main.js.map": "/car-chargers/static/js/main.11a42b84.chunk.js.map",
+    "main.css": "/car-chargers/static/css/main.086fc64f.chunk.css",
+    "main.js": "/car-chargers/static/js/main.da500368.chunk.js",
+    "main.js.map": "/car-chargers/static/js/main.da500368.chunk.js.map",
     "runtime~main.js": "/car-chargers/static/js/runtime~main.64cab64a.js",
     "runtime~main.js.map": "/car-chargers/static/js/runtime~main.64cab64a.js.map",
     "static/js/2.0a6b5f5e.chunk.js": "/car-chargers/static/js/2.0a6b5f5e.chunk.js",
     "static/js/2.0a6b5f5e.chunk.js.map": "/car-chargers/static/js/2.0a6b5f5e.chunk.js.map",
     "index.html": "/car-chargers/index.html",
-    "precache-manifest.4f55a0d399fc20f8080fafcf3484b9e6.js": "/car-chargers/precache-manifest.4f55a0d399fc20f8080fafcf3484b9e6.js",
+    "precache-manifest.32c903393c97329111fe74c51f30f830.js": "/car-chargers/precache-manifest.32c903393c97329111fe74c51f30f830.js",
     "service-worker.js": "/car-chargers/service-worker.js",
-    "static/css/main.d8631cc8.chunk.css.map": "/car-chargers/static/css/main.d8631cc8.chunk.css.map",
+    "static/css/main.086fc64f.chunk.css.map": "/car-chargers/static/css/main.086fc64f.chunk.css.map",
     "static/media/logo.svg": "/car-chargers/static/media/logo.5d5d9eef.svg"
   }
 }
