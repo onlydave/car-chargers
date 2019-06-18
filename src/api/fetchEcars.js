@@ -24,7 +24,7 @@ export const fetchEcars = () =>
     .then(response => response.text())
     .then(xml => {
       const json = convert.xml2js(xml, { compact: true });
-      console.log(json);
+
       const chargers = json.kml.Document.Placemark;
 
       let locations: Locations = Map({});
@@ -42,7 +42,10 @@ export const fetchEcars = () =>
         }
 
         matches.forEach(match => {
-          locations = locations.setIn([name, match[1].trim()], match[2].trim());
+          const status = /Note:/i.test(description)
+            ? "Unknown"
+            : match[2].trim();
+          locations = locations.setIn([name, match[1].trim()], status);
         });
         if (!matches.length) {
           console.warn("no match:", description);

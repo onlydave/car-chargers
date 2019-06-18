@@ -33,7 +33,7 @@ class SelectList extends React.Component<SelectListProps> {
     const { locations, search } = this.props;
     const searchRegex = search
       .split(" ")
-      .map(searchString => new RegExp(searchString, "gmi"));
+      .map(searchString => new RegExp(searchString, "i"));
     if (!locations.size) {
       return (
         <header className="App-header">
@@ -51,6 +51,7 @@ class SelectList extends React.Component<SelectListProps> {
           ) {
             return null;
           }
+
           return (
             <label key={key} className="selectortron">
               <div className="">{key}</div>
