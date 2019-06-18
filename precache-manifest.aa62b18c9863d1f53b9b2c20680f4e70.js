@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e549ffcfbdc6fb1a9c3f65454a55ebf7",
+    "revision": "22d9112414e492fb19e09cc37d70d03c",
     "url": "/car-chargers/index.html"
   },
   {
-    "revision": "65fb94ea5bf01cb23fed",
-    "url": "/car-chargers/static/css/main.086fc64f.chunk.css"
+    "revision": "3b52c0c7599ef709c522",
+    "url": "/car-chargers/static/css/main.248865ae.chunk.css"
   },
   {
-    "revision": "d68737c0df56bf096244",
-    "url": "/car-chargers/static/js/2.8fab97db.chunk.js"
+    "revision": "1577203bbb4e041430e3",
+    "url": "/car-chargers/static/js/2.ff7a6ede.chunk.js"
   },
   {
-    "revision": "65fb94ea5bf01cb23fed",
-    "url": "/car-chargers/static/js/main.5bd898ab.chunk.js"
+    "revision": "3b52c0c7599ef709c522",
+    "url": "/car-chargers/static/js/main.5107df08.chunk.js"
   },
   {
     "revision": "1c15f08c90f5e8afd606",
