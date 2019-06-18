@@ -115,7 +115,11 @@ class LocationStatusList extends React.Component<StatusListProps> {
                 <button
                   onClick={this.removeLocation}
                   name={name}
-                  style={{ padding: 10, border: "1px solid gray" }}
+                  style={{
+                    padding: 10,
+                    border: "1px solid gray",
+                    background: "white"
+                  }}
                 >
                   <FontAwesomeIcon icon={faTrash} color="gray" size="1x" />
                 </button>
@@ -127,7 +131,8 @@ class LocationStatusList extends React.Component<StatusListProps> {
                     padding: 10,
                     border: "1px solid teal",
                     color: "teal",
-                    flexGrow: 1
+                    flexGrow: 1,
+                    background: "white"
                   }}
                 >
                   Edit name
@@ -138,7 +143,7 @@ class LocationStatusList extends React.Component<StatusListProps> {
                   />
                 </button>
               </div>
-              <hr />
+              <hr style={{ marginTop: 20 }} />
             </div>
           );
         })}
