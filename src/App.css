@@ -1,9 +1,9 @@
-.App {
+/* .App {
   text-align: center;
-}
+} */
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+  animation: App-logo-spin infinite 4s linear;
   height: 40vmin;
   pointer-events: none;
 }
@@ -30,4 +30,18 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.selectortron {
+  padding: 10px 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+
+  /* Required for text-overflow to do anything */
+  white-space: nowrap;
+  overflow: hidden;
 }
