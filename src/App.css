@@ -51,6 +51,6 @@
   overflow: hidden;
 }
 
-svg {
+button svg {
   pointer-events: none;
 }

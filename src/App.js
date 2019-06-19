@@ -2,18 +2,31 @@
 import React from "react";
 import "./App.css";
 
-import type { Locations } from "./api/fetchEcars";
+import type { Locations, MapLinks } from "./api/fetchEcars";
 
 import SelectList from "./selectList";
 import { Map, Set, fromJS, isKeyed } from "immutable";
 import fetchEcars from "./api/fetchEcars";
 import LocationStatusList from "./LocationStatusList";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSync, faTimes } from "@fortawesome/free-solid-svg-icons";
 import onWindowFocus from "./utils/onWindowFocus";
 import AppHeader from "./AppHeader";
+import getDistance from "./api/distanceMatrix";
 
-const getSavedImmutable = (key = "selectedLocations") => {
+const tenMinutes = 10 * 60 * 1000;
+
+const getSavedImmutable = (
+  key = "selectedLocations",
+  options: ?{ expire: number }
+) => {
+  if (options && options.expire) {
+    const lastSet = localStorage.getItem(`${key}-last-set`);
+    if (
+      !lastSet ||
+      new Date().getTime() - new Date(lastSet).getTime() > options.expire
+    ) {
+      return false;
+    }
+  }
   const localLocations = localStorage.getItem(key);
   if (!localLocations) return false;
   const response = fromJS(JSON.parse(localLocations), function(key, value) {
@@ -26,10 +39,9 @@ type AppState = {
   selectedLocations: Set<string>,
   locations: Locations,
   locationNicknames: Map<string, string>,
+  locationDistances: Map<string, Map<string, Map<string, string | number>>>,
   search: string,
-  mapLinks: {
-    [name: string]: string
-  },
+  mapLinks: MapLinks,
   fetchError: boolean,
   loading: boolean
 };
@@ -39,16 +51,68 @@ class App extends React.Component<{}, AppState> {
     selectedLocations: getSavedImmutable("selectedLocations") || Set(),
     locations: getSavedImmutable("locations") || Map(),
     locationNicknames: getSavedImmutable("locationsNicknames") || Map(),
+    locationDistances:
+      getSavedImmutable("locationDistances", { expire: tenMinutes }) || Map(),
     search: "",
     mapLinks: {},
     fetchError: false,
     loading: false
   };
 
+  lastDistancesFetch = new Date(
+    localStorage.getItem(`locationDistances-last-set`) || 0
+  );
+
   componentDidMount() {
     this.getLocations();
     onWindowFocus(this.getLocations);
   }
+
+  getDistances = () => {
+    const { selectedLocations, mapLinks, locationDistances } = this.state;
+
+    if (
+      !selectedLocations.size ||
+      (locationDistances.size &&
+        new Date().getTime() - this.lastDistancesFetch.getTime() < tenMinutes)
+    ) {
+      return;
+    }
+    this.lastDistancesFetch = new Date();
+
+    const destinations = selectedLocations.map(locationName => {
+      return {
+        lat: Number(mapLinks[locationName].lat),
+        lng: Number(mapLinks[locationName].lng)
+      };
+    });
+
+    getDistance(destinations.toJS()).then(res => {
+      const locationNames = selectedLocations.toJS();
+
+      let locationDistances = Map();
+
+      res.rows[0].elements.forEach((element, index) => {
+        if (element.status === "OK") {
+          locationDistances = locationDistances.set(
+            locationNames[index],
+            element
+          );
+        }
+      });
+      localStorage.setItem(
+        "locationDistances",
+        JSON.stringify(locationDistances.toJS())
+      );
+      localStorage.setItem(
+        "locationDistances-last-set",
+        new Date().toISOString()
+      );
+      this.setState({
+        locationDistances
+      });
+    });
+  };
 
   getLocations = () => {
     this.setState({
@@ -57,12 +121,15 @@ class App extends React.Component<{}, AppState> {
     fetchEcars()
       .then(({ locations, mapLinks }) => {
         localStorage.setItem("locations", JSON.stringify(locations.toJS()));
-        this.setState({
-          locations,
-          mapLinks,
-          fetchError: false,
-          loading: false
-        });
+        this.setState(
+          {
+            locations,
+            mapLinks,
+            fetchError: false,
+            loading: false
+          },
+          this.getDistances
+        );
       })
       .catch((...error) => {
         console.error(...error);
@@ -121,6 +188,7 @@ class App extends React.Component<{}, AppState> {
       locations,
       selectedLocations,
       locationNicknames,
+      locationDistances,
       search,
       mapLinks,
       fetchError,
@@ -153,6 +221,7 @@ class App extends React.Component<{}, AppState> {
               setLocationNickname={this.setLocationNickname}
               mapLinks={mapLinks}
               locationNicknames={locationNicknames}
+              locationDistances={locationDistances}
             />
           )}
         </div>

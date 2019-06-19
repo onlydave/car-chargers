@@ -10,7 +10,7 @@ import {
   faPen
 } from "@fortawesome/free-solid-svg-icons";
 
-import type { Locations } from "./api/fetchEcars";
+import type { Locations, MapLinks } from "./api/fetchEcars";
 
 import { Map, Set } from "immutable";
 
@@ -18,11 +18,10 @@ export type StatusListProps = {
   removeLocation: string => void,
   setLocationNickname: (string, string) => void,
   locationNicknames: Map<string, string>,
+  locationDistances: Map<string, Map<string, Map<string, string | number>>>,
   selectedLocations: Set<string>,
   locations: Locations,
-  mapLinks: {
-    [name: string]: string
-  }
+  mapLinks: MapLinks
 };
 
 class LocationStatusList extends React.Component<StatusListProps> {
@@ -46,7 +45,6 @@ class LocationStatusList extends React.Component<StatusListProps> {
     } = event;
     const nickname = event.currentTarget.dataset.nickname;
     const newNickname = window.prompt(name, nickname);
-    console.log(newNickname);
     if (newNickname || newNickname === "") {
       this.props.setLocationNickname(name, newNickname);
     }
@@ -57,7 +55,8 @@ class LocationStatusList extends React.Component<StatusListProps> {
       locations,
       selectedLocations,
       locationNicknames,
-      mapLinks
+      mapLinks,
+      locationDistances
     } = this.props;
 
     return (
@@ -97,19 +96,36 @@ class LocationStatusList extends React.Component<StatusListProps> {
                 ) : (
                   name
                 )}
-                <div>
+                <div
+                  style={{
+                    marginLeft: 5,
+                    padding: "5px 0",
+                    border: "1px solid teal",
+                    textAlign: "center",
+                    width: 60
+                  }}
+                >
                   <FontAwesomeIcon
                     icon={faMapMarkerAlt}
                     size="2x"
-                    style={{
-                      marginLeft: 5,
-                      padding: "5px 10px",
-                      border: "1px solid teal"
-                    }}
                     onClick={this.openMap}
-                    data-maplink={mapLinks[name]}
+                    data-maplink={mapLinks[name] && mapLinks[name].url}
                     color="teal"
+                    style={{ width: 60 }}
                   />
+                  <span
+                    style={{
+                      fontSize: 9,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden"
+                    }}
+                  >
+                    {locationDistances.getIn([
+                      name,
+                      "duration_in_traffic",
+                      "text"
+                    ]) || "maps"}
+                  </span>
                 </div>
               </div>
               <div style={{ padding: 5 }}>

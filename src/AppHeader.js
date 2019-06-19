@@ -65,7 +65,7 @@ const AppHeader = (props: HeaderProps) => {
           icon={faSync}
           size="2x"
           color={fetchError ? "red" : "teal"}
-          className={loading ? "spin" : ""}
+          spin={loading}
         />
       </div>
     </div>
